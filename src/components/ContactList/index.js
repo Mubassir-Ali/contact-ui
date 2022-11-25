@@ -1,26 +1,12 @@
-import React, { useEffect, useState } from 'react'
-import { useSelector,useDispatch } from 'react-redux';
+import React from 'react'
+import { useDispatch } from 'react-redux';
 import { dataAction } from '../../features/user/userSlice';
 import { showForm } from '../../features/modal/modalSlice';
 import { userData } from '../../features/user/userSlice';
 
 
-export default function Index() {
-    const [users, setUsers] = useState(null)
+export default function Index({users}) {
     const dispatch = useDispatch();
-
-    const action = useSelector((state) => state.users.actionType);
-
-    useEffect(() => {
-        const getUser = async () => {
-            const res = await fetch('http://localhost:5000/users');
-            const users = await res.json();
-            setUsers(users);
-        }
-
-        getUser();
-
-    }, [action])
 
     const handleDelete = async (id) => {
         const res = await fetch(`http://localhost:5000/users/${id}`, { method: 'DELETE' })
@@ -30,14 +16,9 @@ export default function Index() {
     }
 
     const handleEdit = async (user) => {
-        // dispatch(dataAction('editUser'))
         dispatch(showForm(true))
         dispatch(userData(user))
     }
-
-    const user = useSelector((state) => state.users.user);
-
-  console.log('redux user',user);
 
     return (
         <div>

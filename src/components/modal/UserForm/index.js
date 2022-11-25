@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react'
 
-import { useDispatch,useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { dataAction } from '../../../features/user/userSlice'
 import { userData } from '../../../features/user/userSlice'
 
-
 import { showForm } from '../../../features/modal/modalSlice'
 
-let userId=null;
+let userId = null;
 export default function Index() {
     const user = useSelector((state) => state.users.user);
 
@@ -15,16 +14,16 @@ export default function Index() {
     const [lastName, setlastName] = useState('');
     const [contacts, setcontacts] = useState('');
 
-    const dispatch=useDispatch();
+    const dispatch = useDispatch();
 
-    useEffect(()=>{
-        if(user){
+    useEffect(() => {
+        if (user) {
             setfirstName(user.firstname)
             setlastName(user.lastname)
             setcontacts(user.contacts)
-            userId=user.id;
+            userId = user.id;
         }
-    },[user])
+    }, [user])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -33,9 +32,6 @@ export default function Index() {
             lastName,
             contacts,
         }
-
-
-
 
         if (userId) {
             const res = await fetch(`http://localhost:5000/users/${userId}`, {
@@ -46,6 +42,7 @@ export default function Index() {
                 body: JSON.stringify(data),
             })
             dispatch(dataAction(data))
+
         } else {
             const res = await fetch('http://localhost:5000/users', {
                 method: "POST",
@@ -60,24 +57,21 @@ export default function Index() {
 
         dispatch(showForm(false))
         dispatch(userData({
-            firstname:'',
-            lastname:'',
-            contacts:'',
-            id:''
+            firstname: '',
+            lastname: '',
+            contacts: '',
+            id: ''
         }))
-
-
     }
 
-    const handleCancel=()=>{
+    const handleCancel = () => {
         dispatch(showForm(false))
         dispatch(userData({
-            firstname:'',
-            lastname:'',
-            contacts:'',
-            id:''
+            firstname: '',
+            lastname: '',
+            contacts: '',
+            id: ''
         }))
-
     }
 
     return (
@@ -100,10 +94,8 @@ export default function Index() {
                     <div className='flex justify-between'>
                         <input type="submit" value='submit' className='btn bg-indigo-500 text-white hover:bg-indigo-600' />
                         <button className='btn bg-gray-400 hover:bg-gray-500' onClick={() => handleCancel()}>Cancel</button>
-
                     </div>
                 </div>
-
             </form>
         </div>
     )

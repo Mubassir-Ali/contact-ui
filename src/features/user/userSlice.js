@@ -8,7 +8,6 @@ const initialState={
         contacts:'',
         id:''
     }
-    // user:{}
 }
 
 export const userSlice=createSlice({
@@ -25,5 +24,5 @@ export const userSlice=createSlice({
     }
 })
 
-export const {dataAction, userData} =userSlice.actions;
+export const {dataAction, userData,usersList} =userSlice.actions;
 export default userSlice.reducer;
