@@ -45,10 +45,10 @@ export default function Index({ users }) {
                   </div>
 
                   <div className="flex space-x-4">
-                    <button onClick={() => handleEdit(user)}>
+                    <button title="Edit" onClick={() => handleEdit(user)}>
                       <EditIcon />
                     </button>
-                    <button onClick={() => handleDelete(user.id)}>
+                    <button title="Delete" onClick={() => handleDelete(user.id)}>
                       <DeleteIcon />
                     </button>
                   </div>
