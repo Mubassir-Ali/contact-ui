@@ -3,15 +3,20 @@ import { useDispatch } from 'react-redux';
 import { dataAction } from '../../features/user/userSlice';
 import { showForm } from '../../features/modal/modalSlice';
 import { userData } from '../../features/user/userSlice';
+import { EditIcon, DeleteIcon } from '../icons/index'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-
-export default function Index({users}) {
+export default function Index({ users }) {
     const dispatch = useDispatch();
+    const deleteNotify = (res) => toast(res);
+
 
     const handleDelete = async (id) => {
         const res = await fetch(`http://localhost:5000/users/${id}`, { method: 'DELETE' })
-        if (res) {
+        if (res.status===200) {
             dispatch(dataAction('deleteUser'))
+            deleteNotify('User Deleted Successfully!')
         }
     }
 
@@ -35,8 +40,12 @@ export default function Index({users}) {
                                         </div>
 
                                         <div className="flex space-x-4">
-                                            <button onClick={() => handleEdit(user)}>Edit</button>
-                                            <button onClick={() => handleDelete(user.id)}>Delete</button>
+                                            <button onClick={() => handleEdit(user)}>
+                                                <EditIcon />
+                                            </button>
+                                            <button onClick={() => handleDelete(user.id)}>
+                                                <DeleteIcon />
+                                            </button>
                                         </div>
                                     </div>
                                 </td>
@@ -45,6 +54,7 @@ export default function Index({users}) {
                     }
                 </tbody>
             </table>
+            <ToastContainer  toastStyle={{ backgroundColor: "#22c55e", color:'#ffff' }}/>
         </div>
     )
 }

@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react'
-
 import { useDispatch, useSelector } from 'react-redux';
+
 import { dataAction } from '../../../features/user/userSlice'
 import { userData } from '../../../features/user/userSlice'
-
 import { showForm } from '../../../features/modal/modalSlice'
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 let userId = null;
 export default function Index() {
     const user = useSelector((state) => state.users.user);
-
+    const notify = (res) => toast(res);
     const [firstName, setfirstName] = useState('');
     const [lastName, setlastName] = useState('');
     const [contacts, setcontacts] = useState('');
@@ -41,7 +43,11 @@ export default function Index() {
                 },
                 body: JSON.stringify(data),
             })
-            dispatch(dataAction(data))
+
+            if (res.status === 200) {
+                dispatch(dataAction(data))
+                notify('User Updated Successfully!')
+            }
 
         } else {
             const res = await fetch('http://localhost:5000/users', {
@@ -51,8 +57,10 @@ export default function Index() {
                 },
                 body: JSON.stringify(data),
             })
-            dispatch(dataAction(data))
-
+            if (res.status === 201) {
+                dispatch(dataAction(data))
+                notify('User Created Successfully!')
+            }
         }
 
         dispatch(showForm(false))
@@ -97,6 +105,7 @@ export default function Index() {
                     </div>
                 </div>
             </form>
+            <ToastContainer toastStyle={{ backgroundColor: "#22c55e", color: '#ffff' }} />
         </div>
     )
 }
