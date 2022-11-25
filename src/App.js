@@ -1,54 +1,59 @@
 import { useState, useEffect } from 'react'
-import Contacts from './components/contacts';
+// import Contacts from './components/contacts';
+import ContactList from './components/ContactList/index'
 import UserForm from './components/modal/UserForm';
-// import { useSelector } from 'react-redux';
 
-import { useDispatch,useSelector } from 'react-redux';
-import { dataAction } from './features/user_data/userSlice'
+import { useSelector,useDispatch } from 'react-redux';
+import { showForm } from './features/modal/modalSlice'
+
 
 import './App.css';
 
 
 function App() {
-  const [users, setUsers] = useState(null)
-  const [showForm, setShowForm] = useState(false)
+  // const [users, setUsers] = useState(null)
+  // const [showForm, setShowForm] = useState(false)
+  const dispatch =useDispatch();
   const [search, setsearch] = useState('')
   const action = useSelector((state) => state.users.actionType);
+  const showFormModal = useSelector((state) => state.modal.show);
+
+  
 
   console.log('redux state', action);
 
-  useEffect(() => {
-    const getUser = async () => {
-      const res = await fetch('http://localhost:5000/users');
-      const users = await res.json();
-      setUsers(users);
-    }
+  // useEffect(() => {
+  //   const getUser = async () => {
+  //     const res = await fetch('http://localhost:5000/users');
+  //     const users = await res.json();
+  //     setUsers(users);
+  //   }
 
-    getUser();
+  //   getUser();
 
-  }, [action])
+  // }, [action])
 
-  useEffect(()=>{
-    const handleSearch = async (value) => {
-      setsearch(value);
-      let res=null;
-      if (search) {
-        console.log(search);
-        res = await fetch(`http://localhost:5000/users/filter/${search}`);
-      }
-      else if(search===''){
-        res = await fetch('http://localhost:5000/users');
-      }
-      if(res){
+  // useEffect(()=>{
+  //   const handleSearch = async (value) => {
+  //     setsearch(value);
+  //     let res=null;
+  //     if (search) {
+  //       console.log(search);
+  //       res = await fetch(`http://localhost:5000/users/filter/${search}`);
+  //     }
+  //     else if(search===''){
+  //       res = await fetch('http://localhost:5000/users');
+  //     }
+  //     if(res){
 
-        const resData = await res.json();
-        setUsers(resData);
-      }
-    }
+  //       const resData = await res.json();
+  //       setUsers(resData);
+  //     }
+  //   }
 
-    handleSearch();
+  //   handleSearch();
 
-  },[search])
+  // },[search])
 
   return (
     <div className="container relative mx-auto space-y-10">
@@ -57,7 +62,7 @@ function App() {
       </header>
       <div className="flex-bw">
         <p className='text-3xl font-semibold'>Contacts</p>
-        <button className='btn text-white bg-blue-500 hover:bg-blue-600' onClick={() => setShowForm(true)}>+ Add Contact</button>
+        <button className='btn text-white bg-blue-500 hover:bg-blue-600' onClick={() => dispatch(showForm(true))}>+ Add Contact</button>
       </div>
 
       <form action="" className='my-10'>
@@ -69,7 +74,7 @@ function App() {
         </div>
       </form>
 
-      <table className='w-full border-collapse border border-gray-300'>
+      {/* <table className='w-full border-collapse border border-gray-300'>
         <tbody>
           {
             users?.map((item, index) => (
@@ -84,10 +89,12 @@ function App() {
           }
 
         </tbody>
-      </table>
+      </table> */}
+
+      <ContactList/>
 
       {
-        showForm && <UserForm actionType="Add User" setShowFormState={setShowForm} id={null} />
+        showFormModal && <UserForm />
       }
 
 

@@ -1,31 +1,31 @@
-import React,{useState} from 'react';
+import React, { useState } from 'react';
 import UserForm from '../modal/UserForm'
 
 import { useDispatch } from 'react-redux';
-import { dataAction } from '../../features/user_data/userSlice'
+import { dataAction } from '../../features/user/userSlice'
 
 
 export default function Index(props) {
     const [showForm, setShowForm] = useState(false)
-    const { firstName, lastName, contacts,id } = props
+    const { firstName, lastName, contacts, id } = props
 
     const dispatch = useDispatch();
 
-    const handleDelete=async()=>{
-        const res=await fetch(`http://localhost:5000/users/${id}`,
-        {
-            method: 'DELETE',
-        }
+    const handleDelete = async () => {
+        const res = await fetch(`http://localhost:5000/users/${id}`,
+            {
+                method: 'DELETE',
+            }
         )
 
-        if(res){
+        if (res) {
             dispatch(dataAction('deleteUser'))
 
         }
 
     }
 
-    const handleEdit=async(id)=>{
+    const handleEdit = async (id) => {
         setShowForm(true)
 
     }
@@ -37,13 +37,13 @@ export default function Index(props) {
             </div>
 
             <div className="flex space-x-4">
-                <button onClick={()=>handleEdit(id)}>Edit</button>
-                <button onClick={()=>handleDelete()}>Delete</button>
+                <button onClick={() => handleEdit(id)}>Edit</button>
+                <button onClick={() => handleDelete()}>Delete</button>
             </div>
 
             {
-        showForm && <UserForm actionType="Update User" setShowFormState={setShowForm} id={id}/>
-      }
+                showForm && <UserForm actionType="Update User" setShowFormState={setShowForm} id={id} />
+            }
 
         </div>
     )

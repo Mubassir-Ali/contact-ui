@@ -1,32 +1,30 @@
 import React, { useState, useEffect } from 'react'
 
-import { useDispatch } from 'react-redux';
-import { dataAction } from '../../../features/user_data/userSlice'
+import { useDispatch,useSelector } from 'react-redux';
+import { dataAction } from '../../../features/user/userSlice'
+import { userData } from '../../../features/user/userSlice'
 
-export default function Index({ actionType, setShowFormState, id }) {
+
+import { showForm } from '../../../features/modal/modalSlice'
+
+let userId=null;
+export default function Index() {
+    const user = useSelector((state) => state.users.user);
+
     const [firstName, setfirstName] = useState('');
     const [lastName, setlastName] = useState('');
     const [contacts, setcontacts] = useState('');
 
     const dispatch=useDispatch();
 
-    useEffect(() => {
-        const getUser = async () => {
-            if (id) {
-
-                const res = await fetch(`http://localhost:5000/users/${id}`);
-                const user = await res.json();
-                if (user.length > 0) {
-                    setfirstName(user[0].firstname);
-                    setlastName(user[0].lastname);
-                    setcontacts(user[0].contacts);
-                }
-            }
+    useEffect(()=>{
+        if(user){
+            setfirstName(user.firstname)
+            setlastName(user.lastname)
+            setcontacts(user.contacts)
+            userId=user.id;
         }
-        getUser();
-
-
-    }, [id])
+    },[user])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -36,15 +34,18 @@ export default function Index({ actionType, setShowFormState, id }) {
             contacts,
         }
 
-        if (id) {
-            const res = await fetch(`http://localhost:5000/users/${id}`, {
+
+
+
+        if (userId) {
+            const res = await fetch(`http://localhost:5000/users/${userId}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(data),
             })
-            dispatch(dataAction('editUser'))
+            dispatch(dataAction(data))
         } else {
             const res = await fetch('http://localhost:5000/users', {
                 method: "POST",
@@ -53,11 +54,29 @@ export default function Index({ actionType, setShowFormState, id }) {
                 },
                 body: JSON.stringify(data),
             })
-            dispatch(dataAction('addUser'))
+            dispatch(dataAction(data))
 
         }
 
-        setShowFormState(false)
+        dispatch(showForm(false))
+        dispatch(userData({
+            firstname:'',
+            lastname:'',
+            contacts:'',
+            id:''
+        }))
+
+
+    }
+
+    const handleCancel=()=>{
+        dispatch(showForm(false))
+        dispatch(userData({
+            firstname:'',
+            lastname:'',
+            contacts:'',
+            id:''
+        }))
 
     }
 
@@ -79,8 +98,8 @@ export default function Index({ actionType, setShowFormState, id }) {
                     </div>
 
                     <div className='flex justify-between'>
-                        <input type="submit" value={actionType} className='btn bg-indigo-500 text-white hover:bg-indigo-600' />
-                        <button className='btn bg-gray-400 hover:bg-gray-500' onClick={() => setShowFormState(false)}>Cancel</button>
+                        <input type="submit" value='submit' className='btn bg-indigo-500 text-white hover:bg-indigo-600' />
+                        <button className='btn bg-gray-400 hover:bg-gray-500' onClick={() => handleCancel()}>Cancel</button>
 
                     </div>
                 </div>
