@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { dataAction } from "../../features/user/userSlice";
 import { showForm } from "../../features/modal/modalSlice";
 import { userData } from "../../features/user/userSlice";
-import { EditIcon, DeleteIcon } from "../icons/index";
+import { EditIcon, DeleteIcon, PhoneIcon } from "../icons/index";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -38,17 +38,23 @@ export default function Index({ users }) {
                     <p className="capitalize font-semibold">
                       {user.firstname} {user.lastname}
                     </p>
-                    <p className="text-gray-400 font-semibold">
-                      {user.contacts.slice(0, 3)}-{user.contacts.slice(3, 6)}-
-                      {user.contacts.slice(6)}
-                    </p>
+                    <div className="flex items-center">
+                      <PhoneIcon />
+                      <p className="text-gray-400 text-lg font-semibold ml-2">
+                        {user.contacts.slice(0, 3)}-{user.contacts.slice(3, 6)}-
+                        {user.contacts.slice(6)}
+                      </p>
+                    </div>
                   </div>
 
                   <div className="flex space-x-4">
                     <button title="Edit" onClick={() => handleEdit(user)}>
                       <EditIcon />
                     </button>
-                    <button title="Delete" onClick={() => handleDelete(user.id)}>
+                    <button
+                      title="Delete"
+                      onClick={() => handleDelete(user.id)}
+                    >
                       <DeleteIcon />
                     </button>
                   </div>
