@@ -11,10 +11,10 @@ export default function Index() {
         const handleSearch = async (search) => {
             let res = null;
             if (search) {
-                res = await fetch(`http://localhost:5000/users/filter/${search}`);
+                res = await fetch(`http://3.115.6.236:5000/users/filter/${search}`);
             }
             else if (search === '') {
-                res = await fetch('http://localhost:5000/users');
+                res = await fetch('http://3.115.6.236:5000/users');
             }
             if (res) {
                 const resData = await res.json();
