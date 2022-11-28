@@ -37,7 +37,7 @@ export default function Index() {
     };
 
     if (userId) {
-      const res = await fetch(`http://localhost:5000/users/${userId}`, {
+      const res = await fetch(`http://3.115.6.236/users/${userId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -50,7 +50,7 @@ export default function Index() {
         notify("User Updated Successfully!");
       }
     } else {
-      const res = await fetch("http://localhost:5000/users", {
+      const res = await fetch("http://3.115.6.236/users", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -12,7 +12,7 @@ export default function Index({ users }) {
   const deleteNotify = (res) => toast(res);
 
   const handleDelete = async (id) => {
-    const res = await fetch(`http://localhost:5000/users/${id}`, {
+    const res = await fetch(`http://3.115.6.236/users/${id}`, {
       method: "DELETE",
     });
     if (res.status === 200) {
