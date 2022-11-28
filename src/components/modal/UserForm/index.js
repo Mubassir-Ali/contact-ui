@@ -31,9 +31,9 @@ export default function Index() {
 
   const handleSubmit = async () => {
     const data = {
-      firstName: formik.values.firstName,
-      lastName: formik.values.lastName,
-      contacts: formik.values.contacts,
+      firstName: formik.values.firstName.toLowerCase(),
+      lastName: formik.values.lastName.toLowerCase(),
+      contacts: formik.values.contacts.toLowerCase(),
     };
 
     if (userId) {
