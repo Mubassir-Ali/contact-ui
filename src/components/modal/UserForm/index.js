@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import axios from 'axios';
 
 import { dataAction } from "../../../features/user/userSlice";
 import { userData } from "../../../features/user/userSlice";
@@ -37,26 +38,14 @@ export default function Index() {
     };
 
     if (userId) {
-      const res = await fetch(`http://3.115.6.236:5000/users/${userId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
+      const res = await axios.put(`http://3.115.6.236:5000/users/${userId}`,data);
 
       if (res.status === 200) {
         dispatch(dataAction(data));
         notify("User Updated Successfully!");
       }
     } else {
-      const res = await fetch("http://3.115.6.236:5000/users", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
+      const res = await axios.post("http://3.115.6.236:5000/users", data);
       if (res.status === 201) {
         dispatch(dataAction(data));
         notify("User Created Successfully!");

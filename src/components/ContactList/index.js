@@ -6,15 +6,14 @@ import { userData } from "../../features/user/userSlice";
 import { EditIcon, DeleteIcon, PhoneIcon } from "../icons/index";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 
 export default function Index({ users }) {
   const dispatch = useDispatch();
   const deleteNotify = (res) => toast(res);
 
   const handleDelete = async (id) => {
-    const res = await fetch(`http://3.115.6.236:5000/users/${id}`, {
-      method: "DELETE",
-    });
+    const res = await axios.delete(`http://3.115.6.236:5000/users/${id}`);
     if (res.status === 200) {
       dispatch(dataAction(id));
       deleteNotify("User Deleted Successfully!");

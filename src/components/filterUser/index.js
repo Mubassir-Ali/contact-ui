@@ -1,23 +1,24 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
+import axios from 'axios';
 import ContsctList from '../ContactList/index'
 
 export default function Index() {
     const [search, setsearch] = useState('')
     const [users, setUsers] = useState(null)
     const action = useSelector((state) => state.users.actionType);
-
+console.log(users)
     useEffect(() => {
         const handleSearch = async (search) => {
             let res = null;
             if (search) {
-                res = await fetch(`http://3.115.6.236:5000/users/filter/${search}`);
+                res = await axios.get(`http://3.115.6.236:5000/users/filter/${search}`);
             }
             else if (search === '') {
-                res = await fetch('http://3.115.6.236:5000/users');
+                res = await axios.get('http://3.115.6.236:5000/users');
             }
             if (res) {
-                const resData = await res.json();
+                const resData =  res.data;
                 setUsers(resData);
             }
         }
